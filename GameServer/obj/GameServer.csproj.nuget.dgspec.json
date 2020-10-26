@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Project\\csharp\\MyPoker\\PokerServer\\GameServer\\GameServer.csproj": {}
+    "f:\\Project\\MyPoker\\PokerServer\\GameServer\\GameServer.csproj": {}
   },
   "projects": {
-    "c:\\Project\\csharp\\MyPoker\\PokerServer\\GameServer\\GameServer.csproj": {
+    "f:\\Project\\MyPoker\\PokerServer\\GameServer\\GameServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Project\\csharp\\MyPoker\\PokerServer\\GameServer\\GameServer.csproj",
+        "projectUniqueName": "f:\\Project\\MyPoker\\PokerServer\\GameServer\\GameServer.csproj",
         "projectName": "GameServer",
-        "projectPath": "c:\\Project\\csharp\\MyPoker\\PokerServer\\GameServer\\GameServer.csproj",
-        "packagesPath": "C:\\Users\\SergIT\\.nuget\\packages\\",
-        "outputPath": "c:\\Project\\csharp\\MyPoker\\PokerServer\\GameServer\\obj\\",
+        "projectPath": "f:\\Project\\MyPoker\\PokerServer\\GameServer\\GameServer.csproj",
+        "packagesPath": "C:\\Users\\Server\\.nuget\\packages\\",
+        "outputPath": "f:\\Project\\MyPoker\\PokerServer\\GameServer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\SergIT\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Server\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -76,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

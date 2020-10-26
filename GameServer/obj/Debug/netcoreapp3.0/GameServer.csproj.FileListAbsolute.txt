@@ -48,3 +48,16 @@ c:\Project\csharp\MyPoker\PokerServer\GameServer\obj\Debug\netcoreapp3.0\GameSer
 c:\Project\csharp\MyPoker\PokerServer\GameServer\obj\Debug\netcoreapp3.0\GameServer.dll
 c:\Project\csharp\MyPoker\PokerServer\GameServer\obj\Debug\netcoreapp3.0\GameServer.pdb
 c:\Project\csharp\MyPoker\PokerServer\GameServer\obj\Debug\netcoreapp3.0\GameServer.genruntimeconfig.cache
+f:\Project\MyPoker\PokerServer\GameServer\bin\Debug\netcoreapp3.0\GameServer.exe
+f:\Project\MyPoker\PokerServer\GameServer\bin\Debug\netcoreapp3.0\GameServer.deps.json
+f:\Project\MyPoker\PokerServer\GameServer\bin\Debug\netcoreapp3.0\GameServer.runtimeconfig.json
+f:\Project\MyPoker\PokerServer\GameServer\bin\Debug\netcoreapp3.0\GameServer.runtimeconfig.dev.json
+f:\Project\MyPoker\PokerServer\GameServer\bin\Debug\netcoreapp3.0\GameServer.dll
+f:\Project\MyPoker\PokerServer\GameServer\bin\Debug\netcoreapp3.0\GameServer.pdb
+f:\Project\MyPoker\PokerServer\GameServer\obj\Debug\netcoreapp3.0\GameServer.csprojAssemblyReference.cache
+f:\Project\MyPoker\PokerServer\GameServer\obj\Debug\netcoreapp3.0\GameServer.AssemblyInfoInputs.cache
+f:\Project\MyPoker\PokerServer\GameServer\obj\Debug\netcoreapp3.0\GameServer.AssemblyInfo.cs
+f:\Project\MyPoker\PokerServer\GameServer\obj\Debug\netcoreapp3.0\GameServer.csproj.CoreCompileInputs.cache
+f:\Project\MyPoker\PokerServer\GameServer\obj\Debug\netcoreapp3.0\GameServer.dll
+f:\Project\MyPoker\PokerServer\GameServer\obj\Debug\netcoreapp3.0\GameServer.pdb
+f:\Project\MyPoker\PokerServer\GameServer\obj\Debug\netcoreapp3.0\GameServer.genruntimeconfig.cache

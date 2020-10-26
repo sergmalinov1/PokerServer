@@ -48,8 +48,7 @@ namespace GameServer
                 return;
             }
             else
-            {
-                
+            {               
                 //sent _clientId ti v igre
             }
 
@@ -60,7 +59,7 @@ namespace GameServer
             Client client = Server.clients[_clientId];
          //   Player player = client.player;
 
-            Console.WriteLine($"JoinTheRoom " + client.username);
+           // Console.WriteLine($"JoinTheRoom " + client.username);
 
             playersInRoom.Add(freePlace, client);
 
@@ -69,7 +68,7 @@ namespace GameServer
 
             int placeNum = freePlace;//= playersInRoom.IndexOf(client);
 
-            ServerSend.NewPlayerToAll(client, placeNum);
+            ServerSend.NewPlayerJoins(client, placeNum);
             //ShowAllInRoom();
 
             if (gameStatus == GameStatus.distribution)
@@ -81,7 +80,7 @@ namespace GameServer
             if (Server.room.spectators.Contains(_cl))
             {
                 Server.room.spectators.Remove(_cl);
-                Console.WriteLine($"spectators leaveTheRoom  " + _cl.username);
+              //  Console.WriteLine($"spectators leaveTheRoom  " + _cl.username);
             }
 
 
@@ -89,7 +88,7 @@ namespace GameServer
             {
                 if (kvp.Value == _cl)
                 {
-                    Console.WriteLine($"player leaveTheRoom  " + _cl.username);
+                 //   Console.WriteLine($"player leaveTheRoom  " + _cl.username);
 
                     int numKey = kvp.Key;
 
@@ -112,7 +111,7 @@ namespace GameServer
                 int placeNum = kvp.Key;
               //  string userName = kvp.Value.username;
 
-                ServerSend.NewPlayer(_toClient, kvp.Value, placeNum);
+                ServerSend.PlayerInRoom(_toClient, kvp.Value, placeNum);
                   
             }
         }
@@ -164,7 +163,7 @@ namespace GameServer
                 case GameStatus.start:
                     if (playersInRoom.Count >= 2)
                     {
-                        gameStatus = GameStatus.distribution;
+                       
 
                         foreach (KeyValuePair<int, Client> kvp in playersInRoom)
                         {
@@ -175,11 +174,13 @@ namespace GameServer
                             kvp.Value.playerStatus = PlayerStatus.inGame;
                             Console.WriteLine("InGame: " + kvp.Value.username);
 
+                            //Sent client Cards, status
                             ServerSend.Preflop(_toClient, card1, card2);
                             Console.WriteLine("Preflop: " + card1.ToString() + "-- " + card2.ToString());
-                            //Sent client Cards, status
+                           
 
                         }
+                         gameStatus = GameStatus.rates;
 
                         //Sent chat to all - Game start
                     }
@@ -190,13 +191,26 @@ namespace GameServer
                     break;
 
                 case GameStatus.distribution:
-                   // Console.WriteLine("Distribution!");
-                    //Send each by 2 card
-                    //Sent first action to rate
-                    // gameStatus = GameStatus.rates;
-                    break;
+                    if (playersInRoom.Count < 2)
+                    {
+                        gameStatus = GameStatus.waitPlayers;
+                    }
+                        // Console.WriteLine("Distribution!");
+                        //Send each by 2 card
+                        //Sent first action to rate
+                        // gameStatus = GameStatus.rates;
+                        break;
 
                 case GameStatus.rates:
+                    if (playersInRoom.Count < 2)
+                    {
+                        gameStatus = GameStatus.waitPlayers;
+                    }
+
+                    // отправить первому в списке чтоб делал ставку
+
+
+
                     //first rates
                     // send all rates
 

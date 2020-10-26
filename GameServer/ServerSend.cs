@@ -157,9 +157,9 @@ namespace GameServer
             }
         }
 
-        public static void NewPlayer(int _toClient, Client _player, int _placeNum)
+        public static void PlayerInRoom(int _toClient, Client _player, int _placeNum)
         {
-            using (Packet _packet = new Packet((int)ServerPackets.newPlayer))
+            using (Packet _packet = new Packet((int)ServerPackets.playerInRoom))
             {
                 _packet.Write(_player.id);
                 _packet.Write(_player.username);
@@ -169,13 +169,13 @@ namespace GameServer
             }
         }
 
-        public static void NewPlayerToAll(Client _player, int _placeNum)
+        public static void NewPlayerJoins(Client _player, int _placeNum)
         {
 
            // Console.WriteLine("_placeNum: " + _placeNum);
 
 
-            using (Packet _packet = new Packet((int)ServerPackets.newPlayerToAll))
+            using (Packet _packet = new Packet((int)ServerPackets.newPlayerJoins))
             {
                 _packet.Write(_player.id);
                 _packet.Write(_player.username);

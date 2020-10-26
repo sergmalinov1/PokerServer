@@ -39,7 +39,7 @@ namespace GameServer
         }
 
 
-        public static void PlayerEnterTheRom(int _fromClient, Packet _packet)
+        public static void PlayerEnterTheRoom(int _fromClient, Packet _packet)
         {
             string _join = _packet.ReadString();
             string _roomNum = _packet.ReadString();
