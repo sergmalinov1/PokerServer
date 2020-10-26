@@ -11,13 +11,13 @@ namespace GameServer
             switch (cardSuit)
             {
                 case CardSuit.Club:
-                    return "+"; //"\u2663"; // ♣
+                    return "Club"; //"\u2663"; // ♣
                 case CardSuit.Diamond:
-                    return "#";  //"\u2666"; // ♦
+                    return "Diamond";  //"\u2666"; // ♦
                 case CardSuit.Heart:
-                    return "V"; // "\u2665"; // ♥
+                    return "Heart"; // "\u2665"; // ♥
                 case CardSuit.Spade:
-                    return "A";   //"\u2660"; // ♠
+                    return "Spade";   //"\u2660"; // ♠
                 default:
                     throw new ArgumentException("cardSuit");
             }

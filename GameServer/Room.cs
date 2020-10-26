@@ -31,7 +31,11 @@ namespace GameServer
             MaxPlayersInRoom = 4;
 
             this.deck = new Deck();
-      
+            this.deck.Shuffle();
+           // this.deck.ShowAllCard();
+
+
+
 
 
         }
@@ -164,9 +168,17 @@ namespace GameServer
 
                         foreach (KeyValuePair<int, Client> kvp in playersInRoom)
                         {
+                            Card card1 = deck.GetNextCard();
+                            Card card2 = deck.GetNextCard();
+                            int _toClient = kvp.Value.id;
+
                             kvp.Value.playerStatus = PlayerStatus.inGame;
                             Console.WriteLine("InGame: " + kvp.Value.username);
-                            
+
+                            ServerSend.Preflop(_toClient, card1, card2);
+                            Console.WriteLine("Preflop: " + card1.ToString() + "-- " + card2.ToString());
+                            //Sent client Cards, status
+
                         }
 
                         //Sent chat to all - Game start
@@ -178,7 +190,7 @@ namespace GameServer
                     break;
 
                 case GameStatus.distribution:
-                    Console.WriteLine("Distribution!");
+                   // Console.WriteLine("Distribution!");
                     //Send each by 2 card
                     //Sent first action to rate
                     // gameStatus = GameStatus.rates;

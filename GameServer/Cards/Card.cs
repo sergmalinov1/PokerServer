@@ -5,6 +5,32 @@ using System.Text;
 namespace GameServer
 {
 
+    public enum CardType
+    {
+        Ace = 1,
+        Two,
+        Three,
+        Four,
+        Five,
+        Six,
+        Seven,
+        Eight,
+        Nine,
+        Ten,
+        Jack,
+        Queen,
+        King
+    };
+
+    public enum CardSuit
+    {
+        Club = 1, // ♣
+        Diamond, // ♦
+        Heart, // ♥
+        Spade  // ♠
+    };
+
+    /*
     public enum CardSuit
     {
         Club = 0, // ♣
@@ -29,7 +55,7 @@ namespace GameServer
         King = 13,
         Ace = 14,
     }
-
+    */
     public class Card 
     {
         public Card(CardSuit suit, CardType type)

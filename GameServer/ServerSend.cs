@@ -216,6 +216,24 @@ namespace GameServer
 
         }
 
+        public static void Preflop(int _toClient, Card card1, Card card2)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.preflop))
+            {
+                //int firstCardSuit = (int)card1.Suit;
+               // int firstCardType = (int)card1.Type;
+               // int secondCardSuit = (int)card2.Suit;
+              //  int secondCardType = (int)card2.Type;
+
+                _packet.Write((int)card1.Suit);
+                _packet.Write((int)card1.Type);
+                _packet.Write((int)card2.Suit);
+                _packet.Write((int)card2.Type);
+
+                SendTCPData(_toClient, _packet);
+            }
+        }
+
         #endregion
     }
 }

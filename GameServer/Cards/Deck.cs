@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace GameServer
 {
-    class Deck
+    class Deck : IDeck
     {
-        public readonly IReadOnlyList<Card> AllCards;
+        public List<Card> AllCards = new List<Card>();
 
         private static readonly IEnumerable<CardType> AllCardTypes = new List<CardType>
                                                                          {
@@ -33,28 +34,34 @@ namespace GameServer
                                                                              CardSuit.Spade,
                                                                          };
 
-        private readonly IList<Card> listOfCards;
+        private IList<Card> listOfCards;
 
         private int cardIndex;
 
         public Deck()
         {
-            var cards = new List<Card>();
+           // var cards = new List<Card>();
             foreach (var cardSuit in AllCardSuits)
             {
                 foreach (var cardType in AllCardTypes)
                 {
-                    cards.Add(new Card(cardSuit, cardType));
+                    AllCards.Add(new Card(cardSuit, cardType));
                 }
             }
 
-            AllCards = cards.AsReadOnly();
+         //   AllCards = cards.AsReadOnly();    
+        }
+
+        public void Shuffle()
+        {
+            listOfCards = AllCards.Shuffle().ToList();
+            cardIndex = AllCards.Count;
         }
 
         public void ShowAllCard()
         {
-            int i = 0;
-            foreach(Card card in AllCards)
+            int i = 1;
+            foreach(Card card in listOfCards)
             {
                 Console.WriteLine("Card " + i + " : " + card.ToString());
                 i++;
