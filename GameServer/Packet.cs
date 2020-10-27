@@ -16,6 +16,7 @@ namespace GameServer
         chatMsgSend,
         playerLeaveRoom,
         preflop,
+        idActivePlayer,
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -25,7 +26,8 @@ namespace GameServer
         chatMsgReceived,
         enterTheRoom,
         joinTheRoom,
-        disconect
+        disconect,
+        rate,
 
     }
 

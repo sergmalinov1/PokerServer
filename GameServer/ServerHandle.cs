@@ -20,7 +20,7 @@ namespace GameServer
                 Console.WriteLine($"Player \"{_username}\" (ID: {_fromClient}) has assumed the wrong client ID ({_clientIdCheck})!");
             }
 
-          //  Console.WriteLine("Login: " + _login + ", Password: " + _pass);
+        
 
             Server.clients[_fromClient].Authorization(_login, _pass);       
         }
@@ -59,6 +59,18 @@ namespace GameServer
           
 
             //rooms[roomNum].JoinTheRoom(_fromClient);
+
+        }
+
+        public static void Rate(int _fromClient, Packet _packet)
+        {
+          
+            int _rate = _packet.ReadInt();
+
+            Server.room.PlayerBet(_fromClient, _rate);
+
+           // Console.WriteLine("rate: " + _rate);
+
 
         }
 

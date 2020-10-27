@@ -126,6 +126,7 @@ namespace GameServer
                 { (int)ClientPackets.chatMsgReceived, ServerHandle.ChatMsgReceived },
                 { (int)ClientPackets.enterTheRoom, ServerHandle.PlayerEnterTheRoom },
                 { (int)ClientPackets.joinTheRoom, ServerHandle.PlayerJoinTheRoom },
+                { (int)ClientPackets.rate, ServerHandle.Rate },
 
             };
            // Console.WriteLine("Initialized packets.");

@@ -234,6 +234,16 @@ namespace GameServer
             }
         }
 
+        public static void ActivPlayer(int _idActivePlayer)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.idActivePlayer))
+            {
+                _packet.Write(_idActivePlayer);
+                SendTCPDataToAllInRoom(_packet);
+
+            }
+        }
+
         #endregion
     }
 }
