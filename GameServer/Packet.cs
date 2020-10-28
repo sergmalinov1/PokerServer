@@ -16,6 +16,7 @@ namespace GameServer
         chatMsgSend,
         playerLeaveRoom,
         preflop,
+        playerInGame,
         idActivePlayer,
     }
 

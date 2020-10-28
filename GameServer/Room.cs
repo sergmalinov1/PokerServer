@@ -18,7 +18,7 @@ namespace GameServer
     class Room
     {
         public int MaxPlayersInRoom { get; private set; }
-        public Dictionary<int, Client> playersInRoom = new Dictionary<int, Client>();
+        public Dictionary<int, Client> playersInRoom = new Dictionary<int, Client>(); //int = place
         public List<Client> spectators = new List<Client>();
         public int idActivePlayer;
 
@@ -65,10 +65,12 @@ namespace GameServer
             int placeNum = freePlace;//= playersInRoom.IndexOf(client);
 
             ServerSend.NewPlayerJoins(client, placeNum);
-            //ShowAllInRoom();
+         
 
             if (gameStatus == GameStatus.distribution)
                 gameStatus = GameStatus.start;
+
+           
         }
 
         public void LeaveTheRoom(Client _cl)
@@ -97,7 +99,8 @@ namespace GameServer
 
             if (gameStatus == GameStatus.distribution)
                 gameStatus = GameStatus.waitPlayers;
-            //ShowAllInRoom();
+            
+           // ShowAllInRoom();
         }
 
         public void DataForNewPlayer(int _toClient)
@@ -146,27 +149,31 @@ namespace GameServer
             switch(gameStatus)
             {
                 case GameStatus.waitPlayers:
-                    if (playersInRoom.Count >= 1)
+                    if (playersInRoom.Count >= 2)
                         gameStatus = GameStatus.start;
                     break;
 
                 case GameStatus.start:
-                    if (playersInRoom.Count >= 1)
+                    if (playersInRoom.Count >= 2)
                     {
                        
                         foreach (KeyValuePair<int, Client> kvp in playersInRoom)
                         {
                             Card card1 = deck.GetNextCard();
                             Card card2 = deck.GetNextCard();
-                            int _toClient = kvp.Value.id;
+                            int playerId = kvp.Value.id;
 
                             kvp.Value.playerStatus = PlayerStatus.inGame;
-                            Console.WriteLine("InGame: " + kvp.Value.username);
+
 
                             //Sent client Cards, status
-                            ServerSend.Preflop(_toClient, card1, card2);
-                            Console.WriteLine("Preflop: " + card1.ToString() + "-- " + card2.ToString());
-                           
+
+                            ServerSend.PlayerInGame(playerId);
+                            ServerSend.Preflop(playerId, card1, card2);
+
+                            //Console.WriteLine("InGame: " + kvp.Value.username);
+                            //Console.WriteLine("Preflop: " + card1.ToString() + "-- " + card2.ToString());
+
 
                         }
                         gameStatus = GameStatus.rates;
@@ -228,11 +235,65 @@ namespace GameServer
                 Console.WriteLine($"Ne tot igrok poxodil");
                 return;
             }
-             
+
             //делаем проверки на сделанную ставку
             //отправляем все уведомление игрок сделал ставку такуето
-            //передаем ход следующему игроку
-            //отправляем всем уведомление ходит игрок под номер 2
+
+
+            NextActivePlayer();
+
+            ServerSend.ActivPlayer(idActivePlayer);
+
+        }
+
+        private void NextActivePlayer()
+        {
+            int activePlaceNum = 0;
+            foreach (KeyValuePair<int, Client> kvp in playersInRoom)
+            {
+             
+                if(kvp.Value.id == idActivePlayer)
+                {
+                    activePlaceNum = kvp.Key;
+                }
+            }
+
+            for(int i = activePlaceNum + 1 ; i < MaxPlayersInRoom; i++)
+            {
+                if (NextActivePlayerByKey(i))
+                    return;
+            }
+
+            for (int i = 0; i < activePlaceNum; i++)
+            {
+                if (NextActivePlayerByKey(i))
+                    return;
+            }
+
+            Console.WriteLine($"Nikogo ne nashli");           
+        }
+
+
+        private bool NextActivePlayerByKey(int _key)
+        {
+            if (playersInRoom.ContainsKey(_key))
+            {
+                Client _cl;
+                if (playersInRoom.TryGetValue(_key, out _cl))
+                {
+                    if (_cl.playerStatus == PlayerStatus.inGame)
+                    {
+                        int idNextPlayer = _cl.id;
+                        string name = _cl.username;
+
+                        idActivePlayer = _cl.id;
+                        Console.WriteLine($"Next player id:  " + idNextPlayer.ToString() + ", name: " + name);
+
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

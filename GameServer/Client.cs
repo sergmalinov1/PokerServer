@@ -209,7 +209,7 @@ namespace GameServer
 
         public void Authorization(string _login, string _pass, string _username = "test" )
         {         
-            if (_login == "user" || _login == "admin")
+            if (_login == "user" || _login == "admin" || _login == "serg")
             {
                 username = _login;
                 money = 500;

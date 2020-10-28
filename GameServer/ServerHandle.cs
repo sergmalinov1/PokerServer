@@ -69,7 +69,7 @@ namespace GameServer
 
             Server.room.PlayerBet(_fromClient, _rate);
 
-           // Console.WriteLine("rate: " + _rate);
+          //  Console.WriteLine("rate: " + _rate);
 
 
         }
