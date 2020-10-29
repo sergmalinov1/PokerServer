@@ -26,8 +26,9 @@ namespace GameServer
         public string username;
         public int money;
         public PlayerStatus playerStatus; // fold or inGame
-        public int lastRate; // 0 - чек. 1 или более ставка
 
+        public int sumBetRound; // 0 - чек. 1 или более ставка
+        public int sumBetGame;
 
 
         public TCP tcp;

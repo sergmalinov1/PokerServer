@@ -18,6 +18,7 @@ namespace GameServer
         preflop,
         playerInGame,
         idActivePlayer,
+        playerBet,
     }
 
     /// <summary>Sent from client to server.</summary>

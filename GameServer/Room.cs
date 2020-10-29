@@ -26,6 +26,9 @@ namespace GameServer
         public GameStatus gameStatus = GameStatus.waitPlayers; //pre_start, start, rates, distribution,  pre_finish, finish
         public Deck deck;
 
+        public int sumBet = 0;
+        public int bank;
+
 
         public Room()
         {
@@ -229,21 +232,73 @@ namespace GameServer
         }
 
         public void PlayerBet(int _idPlayer, int _rate)
-        { 
-            if(_idPlayer != idActivePlayer)
+        {
+
+            Client player = GetPlayerById(_idPlayer);
+
+            if (_idPlayer != idActivePlayer)
             {
                 Console.WriteLine($"Ne tot igrok poxodil");
                 return;
             }
 
             //делаем проверки на сделанную ставку
-            //отправляем все уведомление игрок сделал ставку такуето
+            if (_rate == -1) //игрок упал 
+            {
+                //PlayerFold(_idPlayer);
+                player.playerStatus = PlayerStatus.fold;
+                return;
+            }
+
+          
+            if (player.money < _rate) //--досточно ли денег на счету пользователя
+            {
+                //send денег на счету мало
+                return;
+            }
 
 
-            NextActivePlayer();
+            
+            if (sumBet > _rate + player.sumBetRound)  //--ставка меньше чем минимальная ставка на этом кону
+            {
+                //send маленькая ставка
+                return;
+            }
 
-            ServerSend.ActivPlayer(idActivePlayer);
+            player.money -= _rate;              // списываем деньги со счета игрока
+            bank += _rate;                      // добавляем в банк
+            player.sumBetRound += _rate;        // добавляем в общий котел игрока
 
+            //TODO тут нужно сложнее. минимальная ставка может быть меньше!!! нужно делать проверку по суммарнной ставке пользователя за раунд
+            sumBet = player.sumBetRound;  //минимальная ставка равна текущей ставке 
+            
+
+             
+
+
+            //отправляем всем игрокам уведомление что игрок сделал ставку 
+            ServerSend.PlayerBet(_idPlayer, _rate);
+
+            //если все сделали одинаковую ставку. то выкладываем карты и активным игроком становится первый в списке
+
+            //в противном случае
+            NextActivePlayer(); //ищем следующего игрока         
+            ServerSend.ActivPlayer(idActivePlayer); //говорим всем id следующего игрока
+
+        }
+
+        private Client GetPlayerById(int idPlayer)
+        {
+            Client _cl = null;
+            foreach (KeyValuePair<int, Client> kvp in playersInRoom)
+            {
+
+                if (kvp.Value.id == idPlayer)
+                {
+                    _cl = kvp.Value;
+                }
+            }
+            return _cl;
         }
 
         private void NextActivePlayer()
@@ -260,21 +315,22 @@ namespace GameServer
 
             for(int i = activePlaceNum + 1 ; i < MaxPlayersInRoom; i++)
             {
-                if (NextActivePlayerByKey(i))
+                if (isNextPlayer(i))
                     return;
             }
 
             for (int i = 0; i < activePlaceNum; i++)
             {
-                if (NextActivePlayerByKey(i))
+                if (isNextPlayer(i))
                     return;
             }
 
-            Console.WriteLine($"Nikogo ne nashli");           
+            Console.WriteLine($"Nikogo ne nashli");      
+            //если никого не нашли значит активный игрок должен забрать весь выйгрыш
         }
 
 
-        private bool NextActivePlayerByKey(int _key)
+        private bool isNextPlayer(int _key)
         {
             if (playersInRoom.ContainsKey(_key))
             {

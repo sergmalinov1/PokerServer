@@ -163,6 +163,7 @@ namespace GameServer
             {
                 _packet.Write(_player.id);
                 _packet.Write(_player.username);
+                _packet.Write((int)_player.playerStatus);
                 _packet.Write(_placeNum);
 
                 SendTCPData(_toClient, _packet); 
@@ -253,6 +254,15 @@ namespace GameServer
             }
         }
 
+        public static void PlayerBet(int _idPlayer, int _rate)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerBet))
+            {
+                _packet.Write(_idPlayer);
+                _packet.Write(_rate);
+                SendTCPDataToAllInRoom(_packet);
+            }
+        }
         #endregion
     }
 }
