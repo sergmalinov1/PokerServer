@@ -159,7 +159,8 @@ namespace GameServer
                 case GameStatus.start:
                     if (playersInRoom.Count >= 2)
                     {
-                       
+                        deck.Shuffle();
+
                         foreach (KeyValuePair<int, Client> kvp in playersInRoom)
                         {
                             Card card1 = deck.GetNextCard();
@@ -174,8 +175,8 @@ namespace GameServer
                             ServerSend.PlayerInGame(playerId);
                             ServerSend.Preflop(playerId, card1, card2);
 
-                            //Console.WriteLine("InGame: " + kvp.Value.username);
-                            //Console.WriteLine("Preflop: " + card1.ToString() + "-- " + card2.ToString());
+                            Console.WriteLine("InGame: " + kvp.Value.username);
+                            Console.WriteLine("Preflop: " + card1.ToString() + "-- " + card2.ToString());
 
 
                         }
@@ -205,11 +206,25 @@ namespace GameServer
                     break;
 
                 case GameStatus.rates:
-                    if (playersInRoom.Count < 1)
+                    if (playersInRoom.Count < 2)
                     {
                         gameStatus = GameStatus.waitPlayers;
                     }
 
+                    int playerCount = 0;
+                    foreach (KeyValuePair<int, Client> kvp in playersInRoom)
+                    {
+
+                        if (kvp.Value.playerStatus == PlayerStatus.inGame)
+                        {
+                            playerCount += 1;
+                        }
+                    }
+
+                    if(playerCount < 2)
+                    {
+                        gameStatus = GameStatus.start;
+                    }
                     // отправить первому в списке чтоб делал ставку
 
 
@@ -246,13 +261,17 @@ namespace GameServer
             if (_rate == -1) //игрок упал 
             {
                 //PlayerFold(_idPlayer);
+                Console.WriteLine("делаем проверки на сделанную ставку");
                 player.playerStatus = PlayerStatus.fold;
+                ServerSend.PlayerStatus(_idPlayer, PlayerStatus.fold);
+
                 return;
             }
 
           
             if (player.money < _rate) //--досточно ли денег на счету пользователя
             {
+                Console.WriteLine("досточно ли денег на счету пользователя");
                 //send денег на счету мало
                 return;
             }
@@ -261,6 +280,7 @@ namespace GameServer
             
             if (sumBet > _rate + player.sumBetRound)  //--ставка меньше чем минимальная ставка на этом кону
             {
+                Console.WriteLine("ставка меньше чем минимальная ставка на этом кону");
                 //send маленькая ставка
                 return;
             }
@@ -273,8 +293,7 @@ namespace GameServer
             sumBet = player.sumBetRound;  //минимальная ставка равна текущей ставке 
             
 
-             
-
+           
 
             //отправляем всем игрокам уведомление что игрок сделал ставку 
             ServerSend.PlayerBet(_idPlayer, _rate);

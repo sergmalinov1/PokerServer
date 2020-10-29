@@ -19,6 +19,7 @@ namespace GameServer
         playerInGame,
         idActivePlayer,
         playerBet,
+        playerStatus,
     }
 
     /// <summary>Sent from client to server.</summary>

@@ -256,10 +256,23 @@ namespace GameServer
 
         public static void PlayerBet(int _idPlayer, int _rate)
         {
+            Console.WriteLine("PlayerBet");
             using (Packet _packet = new Packet((int)ServerPackets.playerBet))
             {
                 _packet.Write(_idPlayer);
                 _packet.Write(_rate);
+                SendTCPDataToAllInRoom(_packet);
+            }
+        }
+
+
+        public static void PlayerStatus(int _idPlayer, PlayerStatus _playerStatus)
+        {
+            Console.WriteLine("PlayerStatus");
+            using (Packet _packet = new Packet((int)ServerPackets.playerStatus))
+            {
+                _packet.Write(_idPlayer);
+                _packet.Write((int)_playerStatus);
                 SendTCPDataToAllInRoom(_packet);
             }
         }

@@ -1,14 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "AGYLBKYZ08rqBLTSM6w5PeQRzhmq/Sei1xHm034VzTEXuwc6xKs0ibaLhpm43ga+P8lbrz4/HvmzdRANRRleEQ==",
+  "dgSpecHash": "nadMFNzy60cX9FdZbemQlTEaOR/cdl1Vo5WLd8bQltzljYDI6nbLUUW+AMm/Ct5TqvZXLrE7DTZARuph9ZlkEA==",
   "success": true,
-  "projectFilePath": "c:\\Project\\csharp\\MyPoker\\PokerServer\\GameServer\\GameServer.csproj",
+  "projectFilePath": "f:\\Project\\MyPoker\\PokerServer\\GameServer\\GameServer.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\SergIT\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
-    "C:\\Users\\SergIT\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
-    "C:\\Users\\SergIT\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512",
-    "C:\\Users\\SergIT\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.0.3\\microsoft.netcore.app.host.win-x64.3.0.3.nupkg.sha512",
-    "C:\\Users\\SergIT\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512"
+    "C:\\Users\\Server\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\Server\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
+    "C:\\Users\\Server\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\Server\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.0.3\\microsoft.netcore.app.host.win-x64.3.0.3.nupkg.sha512",
+    "C:\\Users\\Server\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512"
   ],
   "logs": []
 }
