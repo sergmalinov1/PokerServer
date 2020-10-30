@@ -5,6 +5,13 @@ using System.Text;
 namespace GameServer
 {
 
+    public enum Stage
+    {
+        flop = 1,
+        turn,
+        river,
+        lastBet,
+    }
     public enum GameStatus
     {
         waitPlayers = 1,
@@ -28,6 +35,8 @@ namespace GameServer
 
         public int sumBet = 0;
         public int bank;
+
+        private Stage stage = Stage.flop; 
 
 
         public Room()
@@ -106,18 +115,7 @@ namespace GameServer
            // ShowAllInRoom();
         }
 
-        public void DataForNewPlayer(int _toClient)
-        {
-            foreach (KeyValuePair<int, Client> kvp in playersInRoom)
-            {
-                int placeNum = kvp.Key;
-              //  string userName = kvp.Value.username;
-
-                ServerSend.PlayerInRoom(_toClient, kvp.Value, placeNum);
-                  
-            }
-        }
-
+     
         private void ShowAllInRoom()
         {
             Console.WriteLine($"------ShowAllInRoom-----");
@@ -160,6 +158,10 @@ namespace GameServer
                     if (playersInRoom.Count >= 2)
                     {
                         deck.Shuffle();
+                        stage = Stage.flop;
+
+
+                        ServerSend.StartNewGame();
 
                         foreach (KeyValuePair<int, Client> kvp in playersInRoom)
                         {
@@ -211,6 +213,7 @@ namespace GameServer
                         gameStatus = GameStatus.waitPlayers;
                     }
 
+                    string userWin = "";
                     int playerCount = 0;
                     foreach (KeyValuePair<int, Client> kvp in playersInRoom)
                     {
@@ -218,11 +221,13 @@ namespace GameServer
                         if (kvp.Value.playerStatus == PlayerStatus.inGame)
                         {
                             playerCount += 1;
+                            userWin = kvp.Value.username;
                         }
                     }
 
                     if(playerCount < 2)
                     {
+                        ServerSend.WinResult(userWin.ToString());
                         gameStatus = GameStatus.start;
                     }
                     // отправить первому в списке чтоб делал ставку
@@ -287,23 +292,73 @@ namespace GameServer
 
             player.money -= _rate;              // списываем деньги со счета игрока
             bank += _rate;                      // добавляем в банк
-            player.sumBetRound += _rate;        // добавляем в общий котел игрока
+            player.sumBetRound += _rate;        // добавляем в общий котел игрока (суммарно сколько он поставил за раунд)
 
             //TODO тут нужно сложнее. минимальная ставка может быть меньше!!! нужно делать проверку по суммарнной ставке пользователя за раунд
-            sumBet = player.sumBetRound;  //минимальная ставка равна текущей ставке 
-            
+            if (sumBet > player.sumBetRound)
+            {
+                sumBet = player.sumBetRound;  //минимальная ставка равна текущей ставке 
+            }
 
-           
+            player.isBetTemp = true;
+
+
 
             //отправляем всем игрокам уведомление что игрок сделал ставку 
             ServerSend.PlayerBet(_idPlayer, _rate);
 
             //если все сделали одинаковую ставку. то выкладываем карты и активным игроком становится первый в списке
+            if(CheckRound())
+            {
+               // Console.WriteLine("ALL BET!!! next round");
+                NextRound();
+
+                int colCardSend = 1;
+
+                switch (stage)
+                {
+                    case Stage.flop:
+                        colCardSend = 3;
+                        stage = Stage.turn;
+                        break;
+
+                    case Stage.turn:
+                        stage = Stage.river;
+                        break;
+
+                    case Stage.river:
+                        stage = Stage.lastBet;
+                        break;
+
+                    case Stage.lastBet:
+                        ServerSend.WinResult("aaa");
+                        gameStatus = GameStatus.start;
+                        return;
+                }         
+
+                for (int i = 0; i < colCardSend; i++)
+                {
+                    Card card = deck.GetNextCard();
+                    ServerSend.CardOnDeck(card);
+                }
+            }
 
             //в противном случае
             NextActivePlayer(); //ищем следующего игрока         
             ServerSend.ActivPlayer(idActivePlayer); //говорим всем id следующего игрока
 
+        }
+
+        public void DataForNewPlayer(int _toClient)
+        {
+            foreach (KeyValuePair<int, Client> kvp in playersInRoom)
+            {
+                int placeNum = kvp.Key;
+                //  string userName = kvp.Value.username;
+
+                ServerSend.PlayerInRoom(_toClient, kvp.Value, placeNum);
+
+            }
         }
 
         private Client GetPlayerById(int idPlayer)
@@ -348,7 +403,6 @@ namespace GameServer
             //если никого не нашли значит активный игрок должен забрать весь выйгрыш
         }
 
-
         private bool isNextPlayer(int _key)
         {
             if (playersInRoom.ContainsKey(_key))
@@ -369,6 +423,27 @@ namespace GameServer
                 }
             }
             return false;
+        }
+
+        private bool CheckRound()
+        {
+            bool isAllBet = true;
+            foreach (KeyValuePair<int, Client> kvp in playersInRoom)
+            {
+                if(kvp.Value.isBetTemp == false &&  kvp.Value.playerStatus == PlayerStatus.inGame)
+                {
+                    isAllBet = false;
+                }
+            }
+            return isAllBet;
+        }
+
+        private void NextRound()
+        {
+            foreach (KeyValuePair<int, Client> kvp in playersInRoom)
+            {
+                kvp.Value.isBetTemp = false;
+            }
         }
     }
 }

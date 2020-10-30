@@ -145,18 +145,6 @@ namespace GameServer
             }
         }
 
-        public static void NewSpectators(int _toClient, Client _player)
-        {
-
-            using (Packet _packet = new Packet((int)ServerPackets.newSpectator))
-            {
-                _packet.Write(_player.id);
-                _packet.Write(_player.username);
-
-                SendTCPData(_toClient, _packet);
-            }
-        }
-
         public static void PlayerInRoom(int _toClient, Client _player, int _placeNum)
         {
             using (Packet _packet = new Packet((int)ServerPackets.playerInRoom))
@@ -168,7 +156,7 @@ namespace GameServer
 
                 SendTCPData(_toClient, _packet); 
             }
-        }
+        } //для нового пользователя отправляеем список всех пользователей в комнтае
 
         public static void NewPlayerJoins(Client _player, int _placeNum)
         {
@@ -184,38 +172,48 @@ namespace GameServer
 
                 SendTCPDataToAllInRoom(_packet);
             }
-        }
-
-        public static void SendChatMsg(Client _player, string _msg)
+        } //отправляем всем сообщение что новый игрок присоеденился
+       
+        public static void StartNewGame()
         {
-
-            using (Packet _packet = new Packet((int)ServerPackets.chatMsgSend))
+            using (Packet _packet = new Packet((int)ServerPackets.startNewGame))
             {
-                _packet.Write(_player.username);
-                _packet.Write(_msg);
-
-                SendTCPDataToAllInRoom(_player.id, _packet);
-
+                string cmd = "start";
+                _packet.Write(cmd);
+                SendTCPDataToAllInRoom(_packet);
             }
         }
 
-        public static void PlayerLeaveTheRoom(Client _player, int _placeNum)
+        public static void PlayerInGame(int _idPlayer) //отправляем всем. что данный игрок играет в раздаче
         {
-            using (Packet _packet = new Packet((int)ServerPackets.playerLeaveRoom))
+            using (Packet _packet = new Packet((int)ServerPackets.playerInGame))
             {
-                _packet.Write(_player.username);
-                _packet.Write(_placeNum);
+                _packet.Write(_idPlayer);
+                SendTCPDataToAllInRoom(_idPlayer, _packet);
+            }
+        }
 
+        public static void ActivPlayer(int _idActivePlayer)  //отправляем всем ID активного играка. тот который ходит
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.idActivePlayer))
+            {
+                _packet.Write(_idActivePlayer);
                 SendTCPDataToAllInRoom(_packet);
 
             }
-            
         }
 
-        public static void AllDataByRoom(Client _player, int _placeNum)
+        public static void PlayerStatus(int _idPlayer, PlayerStatus _playerStatus)
         {
-
+            Console.WriteLine("PlayerStatus");
+            using (Packet _packet = new Packet((int)ServerPackets.playerStatus))
+            {
+                _packet.Write(_idPlayer);
+                _packet.Write((int)_playerStatus);
+                SendTCPDataToAllInRoom(_packet);
+            }
         }
+
 
         public static void Preflop(int _toClient, Card card1, Card card2)
         {
@@ -235,28 +233,25 @@ namespace GameServer
             }
         }
 
-        public static void PlayerInGame(int _idPlayer)
+        public static void CardOnDeck(Card card)
         {
-            using (Packet _packet = new Packet((int)ServerPackets.playerInGame))
+            using (Packet _packet = new Packet((int)ServerPackets.cardOnDesk))
             {
-                _packet.Write(_idPlayer);
-                SendTCPDataToAllInRoom(_idPlayer, _packet);
-            }
-        }
 
-        public static void ActivPlayer(int _idActivePlayer)
-        {
-            using (Packet _packet = new Packet((int)ServerPackets.idActivePlayer))
-            {
-                _packet.Write(_idActivePlayer);
+                _packet.Write((int)card.Suit);
+                _packet.Write((int)card.Type);
+
+
                 SendTCPDataToAllInRoom(_packet);
-
             }
         }
+
+
+      
 
         public static void PlayerBet(int _idPlayer, int _rate)
         {
-            Console.WriteLine("PlayerBet");
+          //  Console.WriteLine("PlayerBet");
             using (Packet _packet = new Packet((int)ServerPackets.playerBet))
             {
                 _packet.Write(_idPlayer);
@@ -265,17 +260,57 @@ namespace GameServer
             }
         }
 
-
-        public static void PlayerStatus(int _idPlayer, PlayerStatus _playerStatus)
+        public static void WinResult(string msg)
         {
-            Console.WriteLine("PlayerStatus");
-            using (Packet _packet = new Packet((int)ServerPackets.playerStatus))
+            using (Packet _packet = new Packet((int)ServerPackets.gameResult))
             {
-                _packet.Write(_idPlayer);
-                _packet.Write((int)_playerStatus);
+                _packet.Write(msg);
                 SendTCPDataToAllInRoom(_packet);
             }
         }
+       
         #endregion
+
+
+
+        public static void SendChatMsg(Client _player, string _msg)
+        {
+
+            using (Packet _packet = new Packet((int)ServerPackets.chatMsgSend))
+            {
+                _packet.Write(_player.username);
+                _packet.Write(_msg);
+
+                SendTCPDataToAllInRoom(_player.id, _packet);
+
+            }
+        }
+        public static void PlayerLeaveTheRoom(Client _player, int _placeNum)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerLeaveRoom))
+            {
+                _packet.Write(_player.username);
+                _packet.Write(_placeNum);
+
+                SendTCPDataToAllInRoom(_packet);
+
+            }
+
+        }
+
+
+
+        /* public static void NewSpectators(int _toClient, Client _player)
+        {
+
+            using (Packet _packet = new Packet((int)ServerPackets.newSpectator))
+            {
+                _packet.Write(_player.id);
+                _packet.Write(_player.username);
+
+                SendTCPData(_toClient, _packet);
+            }
+        }*/
+
     }
 }

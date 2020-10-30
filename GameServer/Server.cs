@@ -125,7 +125,7 @@ namespace GameServer
                 { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
                 { (int)ClientPackets.chatMsgReceived, ServerHandle.ChatMsgReceived },
                 { (int)ClientPackets.enterTheRoom, ServerHandle.PlayerEnterTheRoom },
-                { (int)ClientPackets.joinTheRoom, ServerHandle.PlayerJoinTheRoom },
+                { (int)ClientPackets.joinTheGame, ServerHandle.PlayerJoinTheGame },
                 { (int)ClientPackets.rate, ServerHandle.Rate },
 
             };

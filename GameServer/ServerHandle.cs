@@ -48,7 +48,7 @@ namespace GameServer
            
         }
 
-        public static void PlayerJoinTheRoom(int _fromClient, Packet _packet)
+        public static void PlayerJoinTheGame(int _fromClient, Packet _packet)
         {
             Console.WriteLine("PlayerJoinTheRoom");
             string _join = _packet.ReadString();

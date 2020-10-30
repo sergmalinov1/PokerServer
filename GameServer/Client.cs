@@ -30,6 +30,8 @@ namespace GameServer
         public int sumBetRound; // 0 - чек. 1 или более ставка
         public int sumBetGame;
 
+        public bool isBetTemp = false;
+
 
         public TCP tcp;
         public UDP udp;

@@ -10,16 +10,18 @@ namespace GameServer
     {
         welcome = 1,
         authAnswer,
-        newSpectator,
         playerInRoom,
         newPlayerJoins,
+        startNewGame,
         chatMsgSend,
-        playerLeaveRoom,
-        preflop,
+        playerLeaveRoom, 
         playerInGame,
         idActivePlayer,
         playerBet,
         playerStatus,
+        preflop,
+        cardOnDesk,
+        gameResult,
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -28,7 +30,7 @@ namespace GameServer
         welcomeReceived = 1,
         chatMsgReceived,
         enterTheRoom,
-        joinTheRoom,
+        joinTheGame,
         disconect,
         rate,
 
